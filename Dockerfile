@@ -1,6 +1,6 @@
-FROM python:3.9.16 AS foundation
+FROM python:3.10.8 AS foundation
 
-LABEL maintainer="Burak Ince <burak.ince@linux.org.tr>"
+LABEL maintainer="Burak Ince <burak.ince@linux.org.tr>,Safoine El <burak.ince@linux.org.tr>"
 
 WORKDIR /mlflow/
 COPY pyproject.toml poetry.toml poetry.lock /mlflow/
@@ -9,6 +9,8 @@ RUN ln -s /usr/bin/dpkg-split /usr/sbin/dpkg-split \
     && ln -s /usr/bin/dpkg-deb /usr/sbin/dpkg-deb \
     && ln -s /bin/rm /usr/sbin/rm \
     && ln -s /bin/tar /usr/sbin/tar
+
+RUN apt-get update && apt-get install -y lsb-release && apt-get clean all
 
 # Install build-essential to compile extensions.
 RUN apt-get update && \
@@ -22,7 +24,7 @@ RUN apt-get update && \
       libsqlite3-dev \
       wget \
       curl \
-      llvm-9 \
+      llvm \
       libncursesw5-dev \
       xz-utils \
       tk-dev \
@@ -32,14 +34,12 @@ RUN apt-get update && \
       liblzma-dev && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN ln -s /usr/bin/llvm-config-9 /usr/bin/llvm-config
-
 RUN python -m pip install --upgrade pip
 
 RUN pip install poetry wheel &&  \
     poetry install --no-root --no-dev
 
-FROM python:3.9.16-slim
+FROM python:3.10.8-slim
 
 WORKDIR /mlflow/
 
