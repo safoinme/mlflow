@@ -5,7 +5,7 @@ description = ""
 authors = ["Burak Ince <burak.ince@linux.org.tr>","Bob Rasey <bob.rasey@verusen.com>","Safoine El khabich <safoine.ext@zenml.io>"]
 
 [tool.poetry.dependencies]
-python = "3.11.*"
+python = "3.10.*"
 mlflow = {version = "2.5.0", extras = ["extras", "pipelines"]}
 azure-storage-blob = "^12.17.0"
 google-cloud-storage = "^2.10.0"
